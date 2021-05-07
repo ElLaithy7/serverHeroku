@@ -6,7 +6,7 @@ var fs = require('fs');
 const mediaGalleryRoute = require ("./mediaGallery")
 const bodyParser = require ("body-parser")
 app.use(bodyParser.json())
-app.listen(3003,() => {console.log("server running")})
+app.listen(process.env.PORT || 3000,() => {console.log("server running")})
 app.get("/",(req,res) => {res.send("temp")})
 
 const connect = mongoose.connect("mongodb+srv://user1:amrpass@cluster0.htmtv.mongodb.net/data?retryWrites=true&w=majority", {useNewUrlParser: true}, () => console.log("connected"))
