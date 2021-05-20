@@ -4,8 +4,8 @@ const device = require("./device")
 router.get("/", async(req, res) => {
     try {
         
-        const device = await device.find();
-        res.json({data: device})
+        const devices = await device.find();
+        res.json({data: devices})
     } catch(err) {
         res.json({message: err});
 }
