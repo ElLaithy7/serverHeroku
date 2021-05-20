@@ -6,11 +6,13 @@ const deviceSchema = mongoose.Schema({
     },
     online: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     },
     hoster: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     }
     
 })
