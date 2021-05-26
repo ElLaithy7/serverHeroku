@@ -23,7 +23,7 @@ router.post("/", async(req, res) => {
 router.get("/:deviceID",  async (req, res) => {
     try {
         const thisdevice = await device.findById(req.params.deviceID)
-        res.json({data: thisdevice})
+        res.send(thisdevice)
     }
     catch (err) {
         res.send(err)
