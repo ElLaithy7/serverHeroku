@@ -5,9 +5,7 @@ var gridfs = require('gridfs-stream');
 var fs = require('fs');
 const mediaGalleryRoute = require ("./mediaGallery")
 const devicesRoute = require ("./devices")
-const bodyParser = require ("body-parser");
-const devices = require("./devices");
-const router = require("./mediaGallery");
+const bodyParser = require ("body-parser")
 app.use(bodyParser.json())
 app.listen(process.env.PORT || 3000,() => {console.log("server running")})
 app.get("/",(req,res) => {res.send("temp")})
@@ -54,5 +52,4 @@ connection.once('open', () => {
 
 })
 app.use("/mediaGallery", mediaGalleryRoute)
-// app.use("/devices", devicesRoute)
-devices(router)
+app.use("/devices", devicesRoute)
