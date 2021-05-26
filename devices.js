@@ -1,6 +1,6 @@
 const express = require ("express")
 const router = express.Router()
-const device = require("./device")
+// const device = require("./device")
 // router.get("/", async(req, res) => {
 //     try {
         
@@ -19,23 +19,21 @@ const device = require("./device")
 //     }
 
 // })
-
-
-
-// module.exports = router
-
-module.exports = function(app) {
-    var todoList = require('./devicesController');
+var devicesController = require('./devicesController');
   
-    // todoList Routes
-    app.route('/devices')
-      .get(todoList.list_all_devices)
-      .post(todoList.create_a_device);
+    // devicesController Routes
+    router.route('/devices')
+      .get(devicesController.list_all_devices)
+      .post(devicesController.create_a_device);
   
   
-    app.route('/devices/:deviceID')
-      .get(todoList.read_a_device)
-      .put(todoList.update_a_device)
-      .delete(todoList.delete_a_device);
-  };
+    router.route('/devices/:deviceID')
+      .get(devicesController.read_a_device)
+      .put(devicesController.update_a_device)
+      .delete(devicesController.delete_a_device);
+
+
+module.exports = router
+
+
   
