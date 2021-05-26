@@ -13,6 +13,11 @@ const deviceSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    downloaded: {
+        type: Array,
+        required: true,
+        default:[]
     }
     
 })
