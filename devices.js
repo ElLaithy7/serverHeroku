@@ -1,5 +1,5 @@
-const express = require ("express")
-const router = express.Router()
+// const express = require ("express")
+// const router = express.Router()
 // const device = require("./device")
 // router.get("/", async(req, res) => {
 //     try {
@@ -19,9 +19,16 @@ const router = express.Router()
 //     }
 
 // })
-var devicesController = require('./devicesController');
   
     // devicesController Routes
+    
+
+
+// module.exports = router
+
+module.exports = function (router) {
+    var devicesController = require('./devicesController');
+
     router.route('/devices')
       .get(devicesController.list_all_devices)
       .post(devicesController.create_a_device);
@@ -31,9 +38,6 @@ var devicesController = require('./devicesController');
       .get(devicesController.read_a_device)
       .put(devicesController.update_a_device)
       .delete(devicesController.delete_a_device);
-
-
-module.exports = router
-
-
+    
+  };
   
