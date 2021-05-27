@@ -17,4 +17,14 @@ router.post("/", async(req, res) => {
       res.json({message: err});
     }
 })
+
+router.get("/:_id",  async (req, res) => {
+    try {
+        const thisdevice = await device.findById(req.params._id)
+        res.send(thisdevice)
+    }
+    catch (err) {
+        res.send(err)
+    }
+})
 module.exports = router
