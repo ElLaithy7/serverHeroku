@@ -20,8 +20,8 @@ router.post("/", async(req, res) => {
 
 router.get("/:_id",  async (req, res) => {
     try {
-        const thisdevice = await device.findById(req.params._id)
-        res.send(thisdevice)
+        const thisMedia = await media.findById(req.params._id)
+        res.send(thisMedia)
     }
     catch (err) {
         res.send(err)
