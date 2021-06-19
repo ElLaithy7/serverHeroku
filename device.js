@@ -18,6 +18,17 @@ const deviceSchema = mongoose.Schema({
         type: Array,
         required: true,
         default:[]
+    },
+    longtitude: {
+        type: double,
+        required: true,
+        default: 0.0
+
+    },
+    latitude: {
+        type: double,
+        required: true,
+        default: 0.0
     }
     
 })
