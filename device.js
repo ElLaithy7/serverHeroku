@@ -21,23 +21,27 @@ const deviceSchema = mongoose.Schema({
     },
     order: {
         type: Number,
-        required: true
+        required: true,
+        default: 99
     },
     row: {
         type: Number,
-        required: true
+        required: true,
+        default: 99
     },
     orientation: {
         type: String,
-        required: true
+        required: true,
+        default: "null"
     },
     deviceWidth: {
         type: Number,
-        required: true
+        required: true,
+
     },
     deviceHeight: {
         type: Number,
-        required: true
+        required: true,
     }
     
 })
