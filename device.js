@@ -37,11 +37,13 @@ const deviceSchema = mongoose.Schema({
     deviceWidth: {
         type: Number,
         required: true,
+        default: 1
 
     },
     deviceHeight: {
         type: Number,
         required: true,
+        default: 1
     }
     
 })
