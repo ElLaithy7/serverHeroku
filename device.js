@@ -44,6 +44,21 @@ const deviceSchema = mongoose.Schema({
         type: Number,
         required: true,
         default: 1
+    },
+    numOfDevices: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    posInColumn: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    posInRow: {
+        type: Number,
+        required: true,
+        default: 0
     }
     
 })
