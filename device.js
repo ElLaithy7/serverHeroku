@@ -51,12 +51,12 @@ const deviceSchema = mongoose.Schema({
         default: 0
     },
     posInColumn: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     },
     posInRow: {
-        type: Number,
+        type: String,
         required: true,
         default: 0
     }
