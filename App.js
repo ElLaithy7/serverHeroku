@@ -68,8 +68,8 @@ connection.once('open', () => {
           let filename = req.query.filename;
           let posInRow = req.query.posInRow;
           let posInColumn = req.query.posInColumn;
-          let deviceRow = req.query.deviceRow;
-          let deviceOrder = req.query.deviceOrder;
+          let deviceRow = req.query.row;
+          let deviceOrder = req.query.order;
       
           let ffx,
             ffy = 0;
