@@ -62,85 +62,89 @@ connection.once('open', () => {
         }
     });
 
-    app.get("/api/file/downloadCropped", (req, res) => {
+    app.get('/api/file/downloadCropped', (req, res) => {
         // Check file exist on MongoDB
         try {
-          let filename = req.query.filename;
-          let posInRow = req.query.posInRow;
-          let posInColumn = req.query.posInColumn;
-          let deviceRow = req.query.row;
-          let deviceOrder = req.query.order;
-          let isHost = req.query.isHost;
-          let ffx,
-            ffy = 0;
-          let c1, c2;
-          let finalHeight, finalWidth;
-          
-          let maxWidth = 1280;
-          let maxHeight = 720;
-      
-        let  chunkHeight = maxHeight / deviceRow;
-        let  chunkWidth = maxWidth / deviceOrder;
-      
-          // added part
-          c1 = posInRow.length;
-          c2 = posInColumn.length;
-        let  posColumn = posInColumn.charAt(0);
-        let  positionColumn = String.valueOf(posColumn);
-        let  posRow = posInRow.charAt(0);
-        let  positionRow = String.valueOf(posRow);
-          ffy = chunkHeight * parseInt(positionRow) - chunkHeight;
-          ffx = chunkWidth * parseInt(positionColumn) - chunkWidth;
-      
-          finalHeight = chunkHeight * c1;
-          finalWidth = chunkWidth * c2;
-      
-          gfs.exist({ filename: filename }, async (err, file) => {
-            if (err || !file) {
-              res.status(404).send("File Not Found");
-              return;
-            }
-            let readstream = gfs.createReadStream({ filename: filename });
-            if (isHost === "1") {
-              filename = "host" + filename;
-            }
-            ffmpeg.setFfmpegPath(ffmpegPath);
-            // ffmpeg.setFfprobePath(ffprobePath);
-            ffmpeg.ffprobe(readstream, function (err, metadata) {
-              if (err) {
-                console.error(err);
-              } else {
-                // metadata should contain 'width', 'height' and 'display_aspect_ratio'
-                console.log(metadata);
-              }
+            let filename = req.query.filename;
+            let order = req.query.order;
+            let row = req.query.row;
+            let posInColumn = req.query.posInColumn;
+            let posInRow = req.query.posInRow;
+            let xVal = 0
+            let yVal = 0;
+            let isHost = req.query.isHost;
+            let maxWidth = 1280;
+            let maxHeight = 720;
+            let width = 0;
+            let height = 0;
+            let c1 = 0;
+            let c2 = 0;
+            let posColumn = "";
+            let posRow = "";
+            let finalHeight = 0;
+            let finalWidth = 0;
+    
+            height = maxHeight / row;
+            width = maxWidth / order;
+            
+            
+            c1 = posInRow.length;
+            c2 = posInColumn.length;
+            posColumn = posInColumn.slice(0, 1);
+            posRow = posInRow.slice(0);
+            yVal = height * parseInt(posRow) - height;
+            xVal = width * parseInt(posColumn) - width;
+            finalHeight = height * c1;
+            finalWidth = width * c2; 
+    
+    
+            gfs.exist({ filename: filename }, async (err, file) => {
+                if (err || !file) {
+                    res.status(404).send('File Not Found');
+                    return
+                }
+                let readstream = gfs.createReadStream({ filename: filename });
+                if(isHost === '1'){
+                    filename = "host" + filename;
+                }
+                ffmpeg.setFfmpegPath(ffmpegPath);
+                // ffmpeg.setFfprobePath(ffprobePath);
+                ffmpeg.ffprobe(readstream, function (err, metadata) {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        // metadata should contain 'width', 'height' and 'display_aspect_ratio'
+                        console.log(metadata);
+                    }
+                });
+                let command = await ffmpeg(readstream)
+                    .videoFilters([
+                        {
+                            filter: "crop",
+                            options: {
+                                w: finalWidth,
+                                h: finalHeight, // add correct dimensions here,
+                                x: xVal,
+                                y: yVal
+                                // Add x and y coordinates for crop
+                            },
+                        },
+                    ])
+                    .output(filename).on('end', () => {
+                        let readerStream = fs.createReadStream(filename);
+                        readerStream.pipe(res);
+                    }).run();
+                    console.log(filename)
+                
+    
             });
-            let command = await ffmpeg(readstream)
-              .videoFilters([
-                {
-                  filter: "crop",
-                  options: {
-                    w: finalWidth,
-                    h: finalHeight, // add correct dimensions here,
-                    x: ffx,
-                    y: ffy,
-                    // Add x and y coordinates for crop
-                  },
-                },
-              ])
-              .output(filename)
-              .on("end", () => {
-                let readerStream = fs.createReadStream(filename);
-                readerStream.pipe(res);
-              })
-              .run();
-            console.log(filename);
-          });
-        } catch (err) {
-          res.status(400).send(err);
-          return;
+    
         }
-      });
-
+        catch (err) {
+            res.status(400).send('Error');
+            return
+        }
+    });
 })
 
 app.use("/mediaGallery", mediaGalleryRoute)
