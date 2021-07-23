@@ -70,25 +70,25 @@ connection.once('open', () => {
           let posInColumn = req.query.posInColumn;
           let deviceRow = req.query.row;
           let deviceOrder = req.query.order;
-      
+          let isHost = req.query.isHost;
           let ffx,
             ffy = 0;
           let c1, c2;
           let finalHeight, finalWidth;
-          let isHost = req.query.isHost;
+          
           let maxWidth = 1280;
           let maxHeight = 720;
       
-          chunkHeight = maxHeight / deviceRow;
-          chunkWidth = maxWidth / deviceOrder;
+        let  chunkHeight = maxHeight / deviceRow;
+        let  chunkWidth = maxWidth / deviceOrder;
       
           // added part
           c1 = posInRow.length;
           c2 = posInColumn.length;
-          posColumn = posInColumn.charAt(0);
-          positionColumn = String.valueOf(posColumn);
-          posRow = posInRow.charAt(0);
-          positionRow = String.valueOf(posRow);
+        let  posColumn = posInColumn.charAt(0);
+        let  positionColumn = String.valueOf(posColumn);
+        let  posRow = posInRow.charAt(0);
+        let  positionRow = String.valueOf(posRow);
           ffy = chunkHeight * parseInt(positionRow) - chunkHeight;
           ffx = chunkWidth * parseInt(positionColumn) - chunkWidth;
       
