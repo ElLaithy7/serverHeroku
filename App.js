@@ -136,7 +136,7 @@ connection.once('open', () => {
             console.log(filename);
           });
         } catch (err) {
-          res.status(400).send("Error");
+          res.status(400).send(err);
           return;
         }
       });
