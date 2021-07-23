@@ -105,7 +105,7 @@ connection.once('open', () => {
                 }
                 let readstream = gfs.createReadStream({ filename: filename });
                 if(isHost === '1'){
-                    filename = "host" + filename;
+                    filename = "host1" + filename;
                 }
                 ffmpeg.setFfmpegPath(ffmpegPath);
                 // ffmpeg.setFfprobePath(ffprobePath);
