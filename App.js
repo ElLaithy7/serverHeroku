@@ -62,6 +62,12 @@ connection.once('open', () => {
         }
     });
 
+    function between(min, max) {  
+        return Math.floor(
+          Math.random() * (max - min) + min
+        )
+      }
+
     app.get('/api/file/downloadCropped', (req, res) => {
         // Check file exist on MongoDB
         try {
@@ -105,7 +111,7 @@ connection.once('open', () => {
                 }
                 let readstream = gfs.createReadStream({ filename: filename });
                 if(isHost === '1'){
-                    filename = "host3" + filename;
+                    filename = "host" + between(4,20) + filename;
                 }
                 ffmpeg.setFfmpegPath(ffmpegPath);
                 // ffmpeg.setFfprobePath(ffprobePath);
