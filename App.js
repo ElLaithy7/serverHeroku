@@ -133,8 +133,6 @@ connection.once('open', () => {
                 }
                 // ffmpeg.setFfmpegPath(ffmpegPath);
                 // ffmpeg.setFfprobePath(ffprobePath);
-                ffmpeg.setFfmpegPath("/usr/bin/ffmpeg"); 
-                ffmpeg.setFfprobePath("/usr/bin/ffprobe");
                 ffmpeg.ffprobe(readstream, function (err, metadata) {
                     if (err) {
                         console.error(err);
