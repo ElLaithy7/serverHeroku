@@ -131,10 +131,10 @@ connection.once('open', () => {
                 if (isHost === '1') {
                     filename = "host" + between(101, 150) + filename;
                 }
-                ffmpeg.setFfmpegPath(ffmpegPath);
-                ffmpeg.setFfprobePath(ffprobePath);
-                // Ffmpeg.setFfmpegPath("/usr/bin/ffmpeg"); 
-                // Ffmpeg.setFfprobePath("/usr/bin/ffprobe");
+                // ffmpeg.setFfmpegPath(ffmpegPath);
+                // ffmpeg.setFfprobePath(ffprobePath);
+                ffmpeg.setFfmpegPath("/usr/bin/ffmpeg"); 
+                ffmpeg.setFfprobePath("/usr/bin/ffprobe");
                 ffmpeg.ffprobe(readstream, function (err, metadata) {
                     if (err) {
                         console.error(err);
