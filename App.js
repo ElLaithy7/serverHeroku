@@ -157,14 +157,14 @@ connection.once('open', () => {
                         // Add x and y coordinates for crop
                     }
                 })
-                // if (orientation === "landscape") {
-                //     filters.push({
-                //         filter: "rotate",
-                //         options: {
-                //             rotate=PI/2
-                //         },
-                //     })
-                // }
+                if (orientation === "landscape") {
+                    filters.push({
+                        filter: "rotate",
+                        options: {
+                            rotate=PI/2
+                        },
+                    })
+                }
                 let command = await ffmpeg(readstream)
                     .videoFilters(filters)
                     .output(filename).on('end', () => {
