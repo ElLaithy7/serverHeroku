@@ -161,7 +161,7 @@ connection.once('open', () => {
                     filters.push({
                         filter: "rotate",
                         options: {
-                            rotate=PI/2
+                            rotate=(3.14/2)
                         },
                     })
                 }
