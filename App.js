@@ -159,7 +159,7 @@ connection.once('open', () => {
                     }
                 })
                 console.log("orientation: " + orientation)
-                if (orientation === "landscape") {
+                if (orientation === "Landscape") {
                     filters.push({
                         filter: "rotate",
                         options: {
