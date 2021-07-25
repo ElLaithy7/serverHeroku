@@ -133,14 +133,19 @@ connection.once('open', () => {
                 }
                  ffmpeg.setFfmpegPath(ffmpegPath);
                 ffmpeg.setFfprobePath(ffprobePath);
-                ffmpeg.ffprobe(readstream, function (err, metadata) {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        // metadata should contain 'width', 'height' and 'display_aspect_ratio'
-                        console.log(metadata);
-                    }
-                });
+                try {
+                    ffmpeg.ffprobe(readstream, function (err, metadata) {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            // metadata should contain 'width', 'height' and 'display_aspect_ratio'
+                            console.log(metadata);
+                        }
+                    });
+                } catch (error) {
+                    console.log(error)
+                }
+               
                 let filters = []
                 filters.push({
                     filter: "crop",
