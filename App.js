@@ -167,23 +167,24 @@ connection.once('open', () => {
                 //         },
                 //     })
                 // }
-                if (orientation === "Landscape")
-                {
+
+                // if (orientation === "Landscape")
+                // {
+                //     let command = await ffmpeg(readstream)
+                //     .videoFilters(filters).withVideoFilter('transpose=1')
+                //     .output(filename).on('end', () => {
+                //         let readerStream = fs.createReadStream(filename);
+                //         readerStream.pipe(res);
+                //     }).run();
+                // }
+                // else{
                     let command = await ffmpeg(readstream)
-                    .videoFilters(filters).withVideoFilter('transpose=1')
                     .output(filename).on('end', () => {
                         let readerStream = fs.createReadStream(filename);
                         readerStream.pipe(res);
                     }).run();
-                }
-                else{
-                    let command = await ffmpeg(readstream)
-                    .output(filename).on('end', () => {
-                        let readerStream = fs.createReadStream(filename);
-                        readerStream.pipe(res);
-                    }).run();
-                }
-                console.log(filename)
+                // }
+                // console.log(filename)
 
 
             });
