@@ -159,16 +159,16 @@ connection.once('open', () => {
                     }
                 })
                 console.log("orientation: " + orientation)
-                if (orientation === "Landscape") {
-                    filters.push({
-                        filter: "rotate",
-                        options: {
-                            rotate: (3.14/2)
-                        },
-                    })
-                }
+                // if (orientation === "Landscape") {
+                //     filters.push({
+                //         filter: "rotate",
+                //         options: {
+                //             rotate: (3.14/2)
+                //         },
+                //     })
+                // }
                 let command = await ffmpeg(readstream)
-                    .videoFilters(filters)
+                    .videoFilters(filters).withVideoFilter('transpose=1')
                     .output(filename).on('end', () => {
                         let readerStream = fs.createReadStream(filename);
                         readerStream.pipe(res);
