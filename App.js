@@ -158,6 +158,7 @@ connection.once('open', () => {
                         // Add x and y coordinates for crop
                     }
                 })
+                console.log("orientation: " + orientation)
                 if (orientation === "landscape") {
                     filters.push({
                         filter: "rotate",
