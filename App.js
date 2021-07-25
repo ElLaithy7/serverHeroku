@@ -132,7 +132,7 @@ connection.once('open', () => {
                     filename = "host" + between(101, 150) + filename;
                 }
                  ffmpeg.setFfmpegPath(ffmpegPath);
-                // ffmpeg.setFfprobePath(ffprobePath);
+                ffmpeg.setFfprobePath(ffprobePath);
                 ffmpeg.ffprobe(readstream, function (err, metadata) {
                     if (err) {
                         console.error(err);
