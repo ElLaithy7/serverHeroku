@@ -1,7 +1,7 @@
 const express = require("express")
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-// const ffprobePath = require('ffprobe').path;
-const ffprobePath = require('ffprobe-static').path;
+const ffprobePath = require('ffprobe').path;
+// const ffprobePath = require('ffprobe-static').path;
 const ffmpeg = require('fluent-ffmpeg');
 const app = express()
 const mongoose = require("mongoose")
