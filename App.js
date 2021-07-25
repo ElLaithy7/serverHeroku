@@ -10,9 +10,15 @@ const mediaGalleryRoute = require("./mediaGallery")
 const devicesRoute = require("./devices")
 const bodyParser = require("body-parser")
 app.use(bodyParser.json())
-app.listen(process.env.PORT || 3000, () => { console.log("server running") })
-app.get("/", (req, res) => { res.send("temp") })
-const connect = mongoose.connect("mongodb+srv://user1:amrpass@cluster0.htmtv.mongodb.net/data?retryWrites=true&w=majority", { useNewUrlParser: true }, () => console.log("connected"))
+app.listen(process.env.PORT || 3000, () => {
+    console.log("server running")
+})
+app.get("/", (req, res) => {
+    res.send("temp")
+})
+const connect = mongoose.connect("mongodb+srv://user1:amrpass@cluster0.htmtv.mongodb.net/data?retryWrites=true&w=majority", {
+    useNewUrlParser: true
+}, () => console.log("connected"))
 
 gridfs.mongo = mongoose.mongo;
 
@@ -28,13 +34,14 @@ connection.once('open', () => {
         try {
             let filename = req.body.filename;
 
-            let writestream = gfs.createWriteStream({ filename: filename });
+            let writestream = gfs.createWriteStream({
+                filename: filename
+            });
             fs.createReadStream(__dirname + "/uploads/" + filename).pipe(writestream);
             writestream.on('close', (file) => {
                 res.send('Stored File: ' + file.filename);
             });
-        }
-        catch (err) {
+        } catch (err) {
             res.status(400).send('Error');
             return
         }
@@ -45,28 +52,31 @@ connection.once('open', () => {
         // Check file exist on MongoDB
         try {
             let filename = req.query.filename;
-            gfs.exist({ filename: filename }, (err, file) => {
+            gfs.exist({
+                filename: filename
+            }, (err, file) => {
                 if (err || !file) {
                     res.status(404).send('File Not Found');
                     return
                 }
 
-                let readstream = gfs.createReadStream({ filename: filename });
+                let readstream = gfs.createReadStream({
+                    filename: filename
+                });
                 readstream.pipe(res);
             });
 
-        }
-        catch (err) {
+        } catch (err) {
             res.status(400).send('Error');
             return
         }
     });
 
-    function between(min, max) {  
+    function between(min, max) {
         return Math.floor(
-          Math.random() * (max - min) + min
+            Math.random() * (max - min) + min
         )
-      }
+    }
 
     app.get('/api/file/downloadCropped', (req, res) => {
         // Check file exist on MongoDB
@@ -76,6 +86,7 @@ connection.once('open', () => {
             let row = req.query.row;
             let posInColumn = req.query.posInColumn;
             let posInRow = req.query.posInRow;
+            let orientation = req.query.orientation;
             let xVal = 0
             let yVal = 0;
             let isHost = req.query.isHost;
@@ -89,11 +100,12 @@ connection.once('open', () => {
             let posRow = "";
             let finalHeight = 0;
             let finalWidth = 0;
-    
+
+
             height = maxHeight / row;
             width = maxWidth / order;
-            
-            
+
+
             c1 = posInRow.length;
             c2 = posInColumn.length;
             posColumn = posInColumn.slice(0, 1);
@@ -101,20 +113,28 @@ connection.once('open', () => {
             yVal = height * parseInt(posRow) - height;
             xVal = width * parseInt(posColumn) - width;
             finalHeight = height * c1;
-            finalWidth = width * c2; 
-    
-    
-            gfs.exist({ filename: filename }, async (err, file) => {
+            finalWidth = width * c2;
+
+
+
+
+            gfs.exist({
+                filename: filename
+            }, async (err, file) => {
                 if (err || !file) {
                     res.status(404).send('File Not Found');
                     return
                 }
-                let readstream = gfs.createReadStream({ filename: filename });
-                if(isHost === '1'){
-                    filename = "host" + between(101,150) + filename;
+                let readstream = gfs.createReadStream({
+                    filename: filename
+                });
+                if (isHost === '1') {
+                    filename = "host" + between(101, 150) + filename;
                 }
                 ffmpeg.setFfmpegPath(ffmpegPath);
-                // ffmpeg.setFfprobePath(ffprobePath);
+                ffmpeg.setFfprobePath(ffprobePath);
+                // Ffmpeg.setFfmpegPath("/usr/bin/ffmpeg"); 
+                // Ffmpeg.setFfprobePath("/usr/bin/ffprobe");
                 ffmpeg.ffprobe(readstream, function (err, metadata) {
                     if (err) {
                         console.error(err);
@@ -123,30 +143,37 @@ connection.once('open', () => {
                         console.log(metadata);
                     }
                 });
+                let filters = []
+                filters.push({
+                    filter: "crop",
+                    options: {
+                        w: finalWidth,
+                        h: finalHeight, // add correct dimensions here,
+                        x: xVal,
+                        y: yVal
+                        // Add x and y coordinates for crop
+                    }
+                })
+                // if (orientation === "landscape") {
+                //     filters.push({
+                //         filter: "rotate",
+                //         options: {
+                //             rotate=PI/2
+                //         },
+                //     })
+                // }
                 let command = await ffmpeg(readstream)
-                    .videoFilters([
-                        {
-                            filter: "crop",
-                            options: {
-                                w: finalWidth,
-                                h: finalHeight, // add correct dimensions here,
-                                x: xVal,
-                                y: yVal
-                                // Add x and y coordinates for crop
-                            },
-                        },
-                    ])
+                    .videoFilters(filters)
                     .output(filename).on('end', () => {
                         let readerStream = fs.createReadStream(filename);
                         readerStream.pipe(res);
                     }).run();
-                    console.log(filename)
-                
-    
+                console.log(filename)
+
+
             });
-    
-        }
-        catch (err) {
+
+        } catch (err) {
             res.status(400).send('Error');
             return
         }
